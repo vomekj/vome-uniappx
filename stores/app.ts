@@ -4,8 +4,6 @@ export type TabName = 'home' | 'discover' | 'message' | 'mine' | 'tabbar'
 
 const MOBILE_MAX = 767
 
-let navTimer: ReturnType<typeof setTimeout> | null = null
-
 function resolveLayoutWidth(fallback: number) {
   // #ifdef WEB
   try {
@@ -17,6 +15,10 @@ function resolveLayoutWidth(fallback: number) {
   }
   // #endif
   return fallback
+}
+
+function detectWebPlatform(uniPlatform: string) {
+  return uniPlatform === 'web' || uniPlatform === 'h5'
 }
 
 /** icon 为 remixicon 名（本地 ttf，见 vm-ri-icon） */
@@ -52,17 +54,29 @@ export const TAB_LIST: Array<{
   },
 ]
 
+export const TAB_SHELL_URL = '/pages/tabbar/index'
+
 export const useAppStore = defineStore('app', {
   state: () => ({
     active: 'home' as TabName,
     windowWidth: 0,
     safeAreaInsets: {} as Record<string, number>,
+    /** web/h5；App/小程序为 false */
+    isWeb: false,
   }),
   getters: {
     isMobile(state): boolean {
       return state.windowWidth > 0
         ? state.windowWidth <= MOBILE_MAX
         : true
+    },
+    /** 宽屏顶栏：仅 Web 且非窄屏（App/小程序始终底栏） */
+    useTopNav(): boolean {
+      return this.isWeb && !this.isMobile
+    },
+    /** 底栏：与 useTopNav 互斥 */
+    useTabbarChrome(): boolean {
+      return !this.useTopNav
     },
   },
   actions: {
@@ -74,13 +88,13 @@ export const useAppStore = defineStore('app', {
         /* ignore */
       }
     },
+    /** Tab 一律进壳，禁止切到真实子路由（避免 Web DOM 叠加） */
+    goTabShell(name?: Exclude<TabName, 'tabbar'>) {
+      if (name) this.setActive(name)
+      uni.switchTab({ url: TAB_SHELL_URL })
+    },
     goHome() {
-      this.setActive('home')
-      if (this.isMobile) {
-        uni.switchTab({ url: '/pages/tabbar/index' })
-      } else {
-        uni.switchTab({ url: '/pages/home/index' })
-      }
+      this.goTabShell('home')
     },
     initSystemInfo() {
       try {
@@ -91,32 +105,25 @@ export const useAppStore = defineStore('app', {
         }
         const windowWidth = Number(info.windowWidth || 0)
         const uniPlatform = String(info.uniPlatform || '')
-        const width =
-          uniPlatform === 'web' || uniPlatform === 'h5'
-            ? resolveLayoutWidth(windowWidth)
-            : windowWidth
+        this.isWeb = detectWebPlatform(uniPlatform)
+        const width = this.isWeb
+          ? resolveLayoutWidth(windowWidth)
+          : windowWidth
         this.windowWidth = width
         this.safeAreaInsets = info.safeAreaInsets || {}
-        // uni-app x 部分端无 onWindowResize；有则监听
         const uniAny = uni as unknown as {
           onWindowResize?: (cb: (res: { size?: { windowWidth?: number } }) => void) => void
         }
         uniAny.onWindowResize?.((res) => {
           const next = Number(res.size?.windowWidth || 0)
-          this.windowWidth =
-            uniPlatform === 'web' || uniPlatform === 'h5'
-              ? resolveLayoutWidth(next)
-              : next
+          this.windowWidth = this.isWeb
+            ? resolveLayoutWidth(next)
+            : next
         })
       } catch {
         this.windowWidth = 375
+        this.isWeb = false
       }
-    },
-    debouncedSwitchTab(url: string) {
-      if (navTimer) clearTimeout(navTimer)
-      navTimer = setTimeout(() => {
-        uni.switchTab({ url })
-      }, 300)
     },
   },
 })

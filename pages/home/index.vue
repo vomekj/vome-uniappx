@@ -1,10 +1,5 @@
 <template>
   <vm-page>
-    <vm-header
-      v-if="!app.isMobile"
-      :title="t('header.home')"
-      mode="nav"
-    />
     <scroll-view class="scroll" scroll-y="true">
       <view class="card">
         <text class="card__title">{{ t('home.welcome') }}</text>
@@ -16,12 +11,10 @@
 
 <script setup lang="ts">
 import { useLocaleStore } from '../../stores/locale'
-import { useAppStore } from '../../stores/app'
 import { hideNativeTabBarIfNeeded } from '../../utils/navigation'
 import { useMobileTabShell } from '../../utils/mobile-tab-shell'
 
 const locale = useLocaleStore()
-const app = useAppStore()
 const t = (k: string) => locale.t(k)
 
 useMobileTabShell('home')

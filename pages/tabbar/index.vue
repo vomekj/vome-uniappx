@@ -1,12 +1,18 @@
 <template>
-  <view v-if="show" class="tab-shell">
+  <view class="tab-shell">
+    <vm-header v-if="app.useTopNav" mode="nav" />
     <view class="tab-shell__body">
       <Home v-if="active === 'home'" />
       <Discover v-if="active === 'discover'" />
       <Message v-if="active === 'message'" />
       <Mine v-if="active === 'mine'" />
     </view>
-    <vm-tabbar v-model="tabName" :fixed="false" @change="onTabChange" />
+    <vm-tabbar
+      v-if="app.useTabbarChrome"
+      v-model="tabName"
+      :fixed="false"
+      @change="onTabChange"
+    />
   </view>
 </template>
 
@@ -17,9 +23,13 @@ import Discover from '../discover/index.vue'
 import Message from '../message/index.vue'
 import Mine from '../mine/index.vue'
 import VmTabbar from '../../components/vm-tabbar.vue'
+import VmHeader from '../../components/vm-header.vue'
 import { TAB_LIST, useAppStore, type TabName } from '../../stores/app'
 import { hideNativeTabBarIfNeeded } from '../../utils/navigation'
 
+/**
+ * 唯一 Tab 路由壳：窄屏底栏 / 宽屏顶栏，同路由只换 chrome，禁止 resize switchTab。
+ */
 type ShellTab = Exclude<TabName, 'tabbar'>
 
 const app = useAppStore()
@@ -29,16 +39,11 @@ function resolveTabName(name: string): ShellTab {
   return hit ? hit.name : 'home'
 }
 
-function resolveTabUrl(name: ShellTab) {
-  return TAB_LIST.find((item) => item.name === name)?.path ?? TAB_LIST[0].path
-}
-
 const tabName = ref<ShellTab>(
   resolveTabName(String(uni.getStorageSync('active') || 'home')),
 )
 
 const active = computed(() => tabName.value)
-const show = computed(() => app.isMobile)
 
 function syncTabFromStorage() {
   const saved = resolveTabName(String(uni.getStorageSync('active') || 'home'))
@@ -64,16 +69,6 @@ watch(
     const next = resolveTabName(name)
     if (tabName.value !== next) tabName.value = next
   },
-)
-
-watch(
-  () => app.isMobile,
-  (isMobile) => {
-    if (!isMobile) {
-      app.debouncedSwitchTab(resolveTabUrl(tabName.value))
-    }
-  },
-  { immediate: true },
 )
 </script>
 

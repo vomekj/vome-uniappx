@@ -104,8 +104,7 @@ function goHome() {
 function switchTab(index: number) {
   const item = tabList[index]
   if (!item) return
-  app.setActive(item.name as TabName)
-  openPage(item.path)
+  app.goTabShell(item.name as Exclude<TabName, 'tabbar'>)
 }
 
 function onUserClick() {
@@ -113,12 +112,7 @@ function onUserClick() {
     openPage('/pages/login/index')
     return
   }
-  app.setActive('mine')
-  if (app.isMobile) {
-    openPage('/pages/tabbar/index')
-    return
-  }
-  openPage('/pages/mine/index')
+  app.goTabShell('mine')
 }
 </script>
 

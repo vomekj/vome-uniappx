@@ -34,6 +34,7 @@
 import { ref } from 'vue'
 import { useLocaleStore } from '../../stores/locale'
 import { useUserStore } from '../../stores/user'
+import { useAppStore } from '../../stores/app'
 
 const locale = useLocaleStore()
 const user = useUserStore()
@@ -64,7 +65,7 @@ async function onSubmit() {
       password: password.value,
     })
     uni.showToast({ title: '登录成功', icon: 'none' })
-    uni.switchTab({ url: '/pages/mine/index' })
+    useAppStore().goTabShell('mine')
   } catch (e) {
     const msg = e instanceof Error ? e.message : '登录失败'
     uni.showToast({ title: msg.slice(0, 40), icon: 'none' })

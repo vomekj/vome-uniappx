@@ -1,10 +1,5 @@
 <template>
   <vm-page>
-    <vm-header
-      v-if="!app.isMobile"
-      :title="t('header.mine')"
-      mode="nav"
-    />
     <view class="body">
       <text class="body__name">{{ displayName }}</text>
       <view v-if="!token" class="body__btn" @click="goLogin">
@@ -23,13 +18,11 @@
 import { storeToRefs } from 'pinia'
 import { useLocaleStore } from '../../stores/locale'
 import { useUserStore } from '../../stores/user'
-import { useAppStore } from '../../stores/app'
 import { hideNativeTabBarIfNeeded, openPage } from '../../utils/navigation'
 import { useMobileTabShell } from '../../utils/mobile-tab-shell'
 
 const locale = useLocaleStore()
 const user = useUserStore()
-const app = useAppStore()
 const { token, displayName } = storeToRefs(user)
 const t = (k: string) => locale.t(k)
 
