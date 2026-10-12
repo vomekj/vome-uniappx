@@ -1,0 +1,46 @@
+{
+  "name": "vome-uniappx",
+  "appid": "__UNI__VOMEUNIAPPX",
+  "description": "Vome uni-app x 蒸汽模式模版",
+  "versionName": "1.0.0",
+  "versionCode": "100",
+  "transformPx": false,
+  "uni-app-x": {
+    "vapor": true
+  },
+  "app-plus": {
+    "usingComponents": true,
+    "nvueStyleCompiler": "uni-app",
+    "compilerVersion": 3,
+    "splashscreen": {
+      "alwaysShowBeforeRender": true,
+      "waiting": true,
+      "autoclose": true,
+      "delay": 0
+    },
+    "modules": {},
+    "distribute": {
+      "android": {
+        "permissions": []
+      },
+      "ios": {},
+      "sdkConfigs": {}
+    }
+  },
+  "mp-weixin": {
+    "appid": "",
+    "setting": {
+      "urlCheck": false,
+      "es6": true,
+      "minified": true
+    },
+    "usingComponents": true
+  },
+  "web": {
+    "router": {
+      "mode": "hash"
+    },
+    "title": "威迈科技"
+  },
+  "vueVersion": "3"
+}

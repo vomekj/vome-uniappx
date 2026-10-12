@@ -1,0 +1,63 @@
+/* ucss 友好：用 CSS 变量，避免依赖继承 */
+page,
+.vm-page {
+  --vm-primary: #4e5dff;
+  --vm-bg: #f4f6fc;
+  --vm-text: #1a1d2e;
+  --vm-muted: #8a8fa3;
+  --vm-muted-text: #8a8fa3;
+  --vm-card: #ffffff;
+  --vm-border: #e8eaf2;
+  --vm-danger: #dc2626;
+  --vm-soft-bg: #f4f6fc;
+  --vm-soft-active: rgba(78, 93, 255, 0.12);
+}
+
+page.theme-dark,
+.vm-page.theme-dark,
+.header.is-dark,
+html.theme-dark,
+html.theme-dark body {
+  --vm-primary: #6b78ff;
+  --vm-bg: #141625;
+  --vm-text: #eef0f8;
+  --vm-muted: #9aa0b8;
+  --vm-muted-text: #9aa0b8;
+  --vm-card: #1c1f33;
+  --vm-border: #2a2e45;
+  --vm-danger: #f87171;
+  --vm-soft-bg: #1c1f33;
+  --vm-soft-active: rgba(78, 93, 255, 0.22);
+}
+
+/*
+ * 主题切换圆弧扫过（仅 Web View Transitions，对齐经典 uniapp / web）
+ * App 蒸汽不走此选择器，忽略即可
+ */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+    height: 100%;
+    width: 100%;
+  }
+
+  ::view-transition-old(root) {
+    z-index: 1;
+  }
+
+  ::view-transition-new(root) {
+    z-index: 2;
+    animation: vm-theme-flip 0.9s cubic-bezier(0.33, 1, 0.68, 1) both;
+  }
+}
+
+@keyframes vm-theme-flip {
+  from {
+    clip-path: circle(0% at 100% 0%);
+  }
+  to {
+    clip-path: circle(150% at 100% 0%);
+  }
+}

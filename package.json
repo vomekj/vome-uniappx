@@ -1,0 +1,28 @@
+{
+  "name": "vome-uniappx",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vome uni-app x 蒸汽模版；Cursor 用 HBuilderX cli 启动（非 npm Vite）",
+  "type": "module",
+  "scripts": {
+    "dev": "bun scripts/hx-run.ts web",
+    "dev:mp-weixin": "bun scripts/hx-run.ts mp-weixin",
+    "dev:app-android": "bun scripts/hx-run.ts app-android",
+    "dev:app-ios": "bun scripts/hx-run.ts app-ios",
+    "build": "bun scripts/hx-run.ts build",
+    "build:mp-weixin": "bun scripts/hx-run.ts build-mp-weixin",
+    "build:app-android": "bun scripts/hx-run.ts build-app-android",
+    "build:app-ios": "bun scripts/hx-run.ts build-app-ios"
+  },
+  "dependencies": {
+    "pinia": "^2.2.0",
+    "remixicon": "^4.9.1",
+    "vome-core": "latest",
+    "vue": "^3.4.21"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.4.8",
+    "@types/bun": "^1.4.3",
+    "typescript": "^5.8.2"
+  }
+}

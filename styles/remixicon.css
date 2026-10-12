@@ -1,0 +1,8 @@
+/* App / 蒸汽：字体必须走 /static，勿用 node_modules 相对 woff2 */
+@font-face {
+  font-family: remixicon;
+  src: url('/static/fonts/remixicon.ttf') format('truetype');
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}

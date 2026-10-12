@@ -1,0 +1,36 @@
+{
+  "app": {
+    "name": "Vome"
+  },
+  "common": {
+    "confirm": "确认",
+    "cancel": "取消",
+    "save": "保存",
+    "loading": "加载中…",
+    "empty": "暂无数据"
+  },
+  "header": {
+    "home": "首页",
+    "discover": "发现",
+    "message": "消息",
+    "mine": "我的",
+    "themeLight": "浅色",
+    "themeDark": "深色",
+    "logout": "退出登录",
+    "locale": "语言",
+    "login": "登录"
+  },
+  "aside": {
+    "currentApp": "当前应用"
+  },
+  "login": {
+    "title": "登录",
+    "username": "账号",
+    "password": "密码",
+    "submit": "登录"
+  },
+  "home": {
+    "welcome": "欢迎使用 uni-app x 蒸汽模版",
+    "hint": "请用 HBuilder / HBuilderV 打开本目录运行"
+  }
+}
