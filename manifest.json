@@ -40,7 +40,10 @@
     "router": {
       "mode": "hash"
     },
-    "title": "威迈科技"
+    "title": "威迈科技",
+    "devServer": {
+      "port": 6800
+    }
   },
   "vueVersion": "3"
 }
